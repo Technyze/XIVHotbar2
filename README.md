@@ -1,35 +1,239 @@
 ## Introduction
 
-This is a modified version of xivhotbar made by SirEdeonX and Akirane. I fell in love with this addon but there were various little bugs I wanted to fix and several features I wanted to add. One thing led to another and I ended up fixing and adding a lot. My initial intenton was to fix and add a few things for personal use, but now that I have added so much I want to make it public and see if anyone else likes what I have done. 
+First off, let me say that I absolutely love XIVHotbar and really appreciate the work that SirEdeonX and Akirane did. However, it seems that project is no longer supported. That being said this is a heavily modified version of xivhotbar. I orginally wanted to fix a few bugs a chance some minor things. One thing led to another and I ended up fixing a lot and several nice features. My initial intenton was to just a few things for personal use, but now that I have added so much I want to make it public and see if anyone else likes what I have done. 
 
-Additionally, I also wanted to have this public so that it could get it approved for a private server [HorizonXI.com](https://horizonxi.com/) . Go Check it out! 
+Additionally, I also wanted to have this public so that it could get it approved for a private server [HorizonXI.com](https://horizonxi.com/) . Go check it out! 
 
-I pretty much exclusively play 75 cap era private servers, and thus many design decisions have this in mind. To this point I have only tested this addon on private servers so there may be issues if this is used on retail. However, most of the private servers I have played on use the retail client.  
 
-## Why XIVhotbar-plus? 
+## Why XIHotbar?
 
-While a large portion of this addon is the original code by Edeon and Akirane. I have made some major features 
-(see below) that have no enable/disable toggle and are forced. Therefore, previous xivhotbar users might find that this
-addon is not for them.
+While a considerable portion of this addon is the original code by SirEdeonX and Akirane. I have made some strict changes, including major features (see below) that have no enable/disable toggle and are forced. Therefore, previous xivhotbar users might find that this addon is not for them.
+
+Additionally, I pretty much exclusively play 75 cap era private servers, and thus many design decisions have this in mind. To this point I have only tested this addon on private servers so there may be issues if this is used on retail. However, most of the private servers I have played on use the retail client. The bigger issue is potential issues with spells/abilities/weaponskills beyond level 75. 
 
 ## Getting Started
 
-Most of the initial setup and installation for this addon remains the same. Please refer to [Akirane's XIVHotbar Documentation](https://github.com/Akirane/XIVHotbar)
+1. Put the addon in your windower/addons folder. Next, inside the data folder within the xihotbar folder create a folder with your character(s) name.
+2. Inside your <name-of-character> folder create a general.lua and <job>.lua for each job you want to setup. Additionally, you can copy over the premade templates I have made in the Data/Technyze folder. 
+The General.lua is the second page on the hotbar that is consistent across all jobs. 
 
+```
+								Location: Windower 4/addons/xihotbar/data/<name-of-character>/general.lua
+								and
+								Location: Windower 4/addons/xihotbar/data/<name-of-character>/<job>.lua
+```
+3. The below image is the default layout and positioning. 
+![Default Layout Image](INSERT DEFAULT LAYOUT IMAGE HERE)
+
+4. Add the load command to your windower init.txt
+```
+								Location:	Windower 4/scripts/init.txt
+```
+```
+								Command:	lua load xivhotbar-plus
+```
+5. Opening the game and logging into your character will generate a settings.xml based on the defaults.lua file (Do not the defaults.lua file). 
+Only edit your settings through the settings.xml file. A list of available options to edit is detailed below in the "UI Changes" section. 
+```
+								Location:	Windower 4/addons/xivhotbar-plus/data/settings.xml
+```
+6. You setup all your keybinds in the keybinds.lua file.
+```
+								Location:	Windower 4/addons/xivhotbar-plus/data/keybinds.lua
+```
+7. You can move you hotbars around ingame with the '//htb move' command. Too save your new hotbar locations simply use the '//htb move' command again.
+```
+								Command:	htb move
+```
+
+NOTE: When saving your hotbar positions with the '//htb move' command the new locations are saved in the settings.xml file at the bottom inside new xml tags 'Your-Character-Name' -> 'Hotbar' -> 'Offsets'.
+I recommend after saving these new positions by copying them over to the the Offset tags inside the 'Global' tag to keep hotbar positions consistent between characters. The 'First' tag refers to the first hotbar. Other tags for the other hotbars will appear once they've been moved. 
+
+```
+								<your-character-name>
+									<Hotbar>
+										<Offsets>
+											<First>
+												<OffsetX>740</OffsetX>
+												<OffsetY>530</OffsetY>
+											</First>
+										</Offsets>
+									</Hotbar>
+								</your-character-name>
+```
+
+#### Coming from XIVHotbar?
+
+If you've used previous versions of XIVHotbar. Simply download this version and transfer over your Data/Your-Character-Name folder. All your previous setup actions will load normally to their respective hotbars.
+However, prepare to setup hotbar locations and other various settings again.
+
+## Understanding the JOB.lua and General.lua files
+
+Setting up your desired actions on the hotbar follows the exact format as XIVHotbar. If you have not used XIVHotbar before I recommend reading the information below and looking at the premade templates in the /Data/Technyze folder inside the XIHotbar folder. 
+
+When loading the addon or switching main jobs. This addon will search the <your-character-name> folder for your current main job file.
+
+
+#### Action Layout:
+```lua
+xivhotbar_keybinds_job['Base'] = { 
+	{'Slot Desigination', 'Action Type', 'Action Name', 'Target Type', 'Action Title', 'Action Image'},
+}
+```
+
+1. Slot Designation: 'Environment Hotbar# Slot#' 
+	- Environment:[battle|b|field|f] - 'b' and 'f' can be used as shorthand. Battle refers to the main hotbar bar and 'Field' referes to the general hotbar.
+	- Hotbar#:[1|2|3|4|5|6] 
+	- Slot#[1|2|3|4|5|6|7|8|9|10|11|12]
+2. Action Type: [ma|ja|ws|input|macro|pet] - Can be blank for input and macro.
+3. Action Name: Name of Spell/Ability/Weaponskill etc in game. Exact spelling required. 
+4. Target Type: [me|t|st|stpc|stnpc]
+5. Action Title: The name you want displayed on the hotbar slot for this specific action.
+6. Action Image: Can be skipped/removed. If left out action will display the default image if available in the images/icons folder. Otherwise specify the file name of the image in the images/icons/custom folder. 
+
+##### Example 1: Action for Main Job
+```lua
+xivhotbar_keybinds_job['Base'] = { 
+	{'battle 1 1', 'ma', 'Cure', 'stpc', 'Cure'},
+}
+```
+This action will appear on the 'Main'/'Battle' Environment on the first hotbar in the first slot. It will have the text 'Cure' as a label, and it will use the default image for Cure. 
+
+##### Example 2: Action for Sub Job
+```lua
+xivhotbar_keybinds_job['WHM'] = {
+  {'battle 2 1', 'ma', 'Poisona', 'stpc', 'Poisona'},
+}
+```
+This action will appear when your sub job in game is White Mage on the 'Main'/'Battle' Environment on the second hotbar in the first slot. It will have the text 'Poisona' as a label, and it will use the default image for Poisona. 
+
+##### Example 3: Action for General/Field Environment
+```lua
+xivhotbar_keybinds_general['Root'] = {
+	{'field 5 7', 'input', '/sea Rolanberry', '', 'Rolan', 'check'},
+}
+```
+This action will appear on the 'General'/'Field' Environment on the fifth hotbar in the seventh slot. The action type is 'input' so the following command will be input into the in-game chat. There is no target type because input/macro do not need targets. It will have text 'Rolan' as a label. Also, it will use the check.png file in the 'images/icons/custom' folder.
+
+##### Example 4: Action for a Summoner
+```lua
+xivhotbar_keybinds_job['Carbuncle'] = {
+	{'battle 3 1', 'ja',  'Poison Nails', 't', 'Nails','summons/carbuncle'}
+}
+```
+This action will appear on your 'Main'/'Battle' Environment on your third hotbar in the first slot when carbuncle has been summoned. The action type set here is 'ja' because job abilities are pet abilities, but 'pet' would also work here. The action name is 'Poison Nails' and the target is target. The action will appear on the hotbar with the label 'Nails' and a custom image is set reference the carbuncle.png in the 'images/icons/custom/summons' folder. 
+
+
+##### Example 5: Action for a Weaponswitching
+```lua
+xivhotbar_keybinds_job['Sword'] = {
+  {'battle 1 8', 'ws', 'Savage Blade', 't', 'Savage', 'ws'},
+}
+```
+This action will appear on your 'Main'/'Battle' Environment on the first hotbar in the eighth slot when a Sword is equipped. The action type 'ws' weaponskill and the action is 'Savage Blade' and the target is target. Action action will have the label 'Savage' and the action's image is a custom image named ws.png is the 'images/icons/custom' folder. Note: This action will not appear if the specified weaponskill has not been learned yet.
+
+##### Example 6: Scripted Macro Action
+```lua
+{'battle 3 3', 'macro','input /ja "Sneak Attack" <me>;wait 1;input /ja "Trick Attack" <me>;wait 1;input /ws "Viper Bite" <t>','','sataVB',''},
+```
+This action will appear on your 'Main'/'Battle' Environment on your third hotbar in the third slot. The action type is a 'macro' which means you will be able to execute a series of actions in sequence similar to an in-game macro. The following command must follow this exact format to work. Each action seperated by a semicolon with no spaces between actions. Macro's do not require a target to be specified so the quotation for target is empty. This macro will have the label 'sataVB' and it will use the default image for all macros. 
 
 ## UI Changes 
 
-The UI and setting up the UI remains basically unchanged and should work as before. Except:
+I have added a bunch more settings to edit. I've also move some settings to different locationsand removed old useless settings.
 
-- Added a toggle to remove/hide the numbers next to each hotbar. (Adjustable in settings.xml by HideHotbarNumbers)
-- Added a toggle to remove/hide environment(page) numbers. (Adjustable in settings.xml by HideEnvironmentNumbers)
+- The ability to display the 'Costs' of each action has returned. However, only if the action is a spell(MP).
+
+Costs: Displays the MP cost of each action on each slot if it is a spell
+Keys: Displays the hotkey associated with each slot.
+Recasts: Displays the recast time for each action on each slot if action is on cooldown.
+ActionName: A display of each name that has been given to each action on each slot.
+Enviroment: A display of the current Environment (Page) the player is on ('Main','General'). Previouly called: ('1','2')
+Hotbar Numbers: Displays a number next to each hotbar (1,2,3,4,5,6)
+Inventory: Displays current inventory and max inventory size (Changes color as the bag inventory get more full)
+ActionDescription: On mouse hover displays information about each action ('ma','ws','ja','pet'). 
+
+You can currently change the following in the settings.xml file:<br>
+General -> HideHotbarNumbers: Set to true/false to hide the numbers (1,2,3,4,5,6) next to each hotbar. <br>
+General -> HideEnvironment: Set to true/false to hide the environment text. <br>
+General -> HookOntoBar: Hook environment labels to a specified hotbar #. Set to 0 to customime is Texts -> Environment <br>
+General -> HideInventoryCount: Set to true/false to hide inventory count <br>
+General -> EnableWeaponSwitching: Set to true/false to enable weapon switching. <br>
+
+Hotbar -> HideActionCost, [HideActionElement], HideActionName, [HideBattleNotice], HideEmptySlots, [HideRecastAnimation], HideRecastText, ShowActionDescription<br>
+Hotbar -> Misc -> Disabled: Opacity<br>
+Hotbar -> Misc -> Feedback: Opacity, Speed<br>
+Hotbar -> Offsets -> First: OffsetX, OffsetY, Vertical<br>
+Hotbar -> Offsets -> Second: OffsetX, OffsetY, Vertical<br>
+Hotbar -> Offsets -> Third: OffsetX, OffsetY, Vertical<br>
+Hotbar -> Offsets -> Fourth: OffsetX, OffsetY, Vertical<br>
+Hotbar -> Offsets -> Fifth: OffsetX, OffsetY, Vertical<br>
+Hotbar -> Offsets -> Sixth: OffsetX, OffsetY, Vertical<br>
+Hotbar -> Style: HotbarCount, HotbarLength, HotbarSpacing, OffsetX, OffsetY, SlotAlpha, SlotIconScale, SlotSpacing<br>
+Hotbar -> Theme: [BattleNotice], Frame, Slot<br>
+
+Texts -> Costs: Font, Size <br>
+Texts -> Costs -> Pos: Offset X, Offset Y<br>
+Texts -> Costs -> Color: Alpha, Red, Green, Blue<br>
+Texts -> Costs -> Stroke: Alpha, Red, Green, Blue, Stroke Width<br>
+
+Texts -> Keys: Font, Size <br>
+Texts -> Pos: Offset X, Offset Y<br>
+Texts -> Color: Alpha, Red, Green, Blue <br>
+Texts -> Stroke: Alpha, Red, Green, Blue, Stroke Width<br>
+
+Texts -> Recasts: Font, Size <br>
+Texts -> Recasts -> Pos: Offset X, Offset Y <br>
+Texts -> Recasts -> Color: Alpha, Red, Green, Blue <br>
+Texts -> Recasts -> Stroke: Alpha, Red, Green, Blue, Stroke Width<br>
+
+Texts -> ActionName: Font, Size <br>
+Texts -> ActionName -> Pos: Offset X, Offset Y <br>
+Texts -> ActionName -> Color: Alpha, Red, Green, Blue <br>
+Texts -> ActionName -> Stroke: Alpha, Red, Green, Blue, Stroke Width<br>
+Texts -> ActionName -> Background: Enable, Opacity<br>
+
+Texts -> Environment: Battle Text, Field Text, Font, Size, Italics, <br>
+Texts -> Environment -> Pos: HookOntoBar, HookOffsetX, HookOffsetY, Pos X, Pos Y, OffsetX, OffsetY [Set HookOntoBar to 0 for custom position. **Offset adjusts the Field Text:(Default: 'General') position relative to the Battle Text:Default: 'Main' position.]<br>
+Texts -> Environment -> Color: Alpha, Red, Green, Blue <br>
+Texts -> Environment -> Stroke: Width, Alpha, Red, Green, Blue<br>
+
+Texts -> HotbarNumbers: Font, Size, Italics <br>
+Texts -> HotbarNumbers -> Pos: OffsetX, OffsetY, VertOffsetX, VertOffsetY<br>
+Texts -> HotbarNumbers -> Color: Alpha, Red, Green, Blue <br>
+Texts -> HotbarNumbers -> Stroke: Alpha, Red, Green, Blue, Stroke Width <br>
+
+Texts -> Inventory -> Font, Italics, Size <br>
+Texts -> Inventory -> Background: Enable, Opacity <br>
+Texts -> Inventory -> Color: Alpha, Red, Green, Blue <br>
+Texts -> Inventory -> Stroke: Alpha, Red, Green, Blue, Width <br>
+Texts -> Inventory -> Pos: Unlock(True/False), PosX, PosY, OffsetX, OffsetY [Set Unlock to True to move position] <br>
+
+Texts -> ActionDescription: Font, Size, Italic <br>
+Texts -> ActionsDescription -> Color: Alpha, Red, Green, Blue <br>
+Texts -> ActionsDescription -> Stroke: Width, Alpha, Red, Green, Blue <br>
+Texts -> ActionsDescription -> Background: Enable/Disable, Opacity <br>
+
+Controls -> [ToggleBattleMode] <br>
+Dev -> DevMode - Set to true/false to allow additional functionality during development.<br>
+
+
+### Environment Label
+
+
+Like previous versions of the hotbar, this hotbar still only supports two Environments(Battle Page and Field Page).
+- Changed the enviroment names from ('1','2') to ('Main','General'). Main page used by your JOB.lua file and general being the general.lua file.
+
+
 - Added the ability to customize(Size,Position,Offset,Opacity) the environment numbers If environment numbers are not hidden. (Adjustable in settings.xml in the Environment section). If CustomSettings is false in the environment section then environment numbers will attach themself to the specified hotbar based on the HookOntoBar variable in the environment section.
 - Added the ability to customize (Size,Opacity,Position) of inventory count if HideInventoryCount is set to false. (Adjustable in settings.xml in the Inventory section)
 - Added the ability to individually adjust the font size of the MP Cost Text (CostSize), Hotkeys text (KeysSize), Recast timer (Recast Size). (Adjustable in settings.xml in the Texts Section)
 - Shifted the name of spells to be below each hotbar slot instead of on the bottom of each slot. I found this looked better and easier to read. 
+- Added back the ability to toggle on mp cost of spells. Removed showing TP cost. 
 
+# New Features
 
-## Level sync and level cap feature
+## Level Sync and Level Cap
 
 This is one of the main features I wanted to add. Often on era private servers you are level syncing in parties or in level capped zones. It can be a bit annoying to constantly remember what spells and abilities you have available to you under capped level conditions. Thus, when being level sync'd or being in a level capped zone, any skill, ability, or weaponskill that is no longer available to you will be removed from the hotbar until the sync conditions are removed. 
 
@@ -40,13 +244,19 @@ Level 75 RDM zoning into Promyvion-Holla (This also works with level sync in par
 
 Please note that Dia II (31) changes to Dia (1). This is explained below in the "Tiered Spells Sharing Hotbar Slot" section.
 
-## Unlearned Spells:
+## Unlearned Spells/Weaponskills/Abilities:
 
-Previously spells setup on the hotbar in a JOB.lua file that were not yet learned ingame would still show up on the hotbar an appear lite up and useable. Now in this scenario the spell will appear dimmed until they are learned. Upon learning a spell the spell will immediately appear useable. 
+Spells:
+Previously spells setup on the hotbar in a JOB.lua file that were not yet learned ingame would still show up on the hotbar an appear lit up and useable. Now in this situation spells will appear dimmed until they are learned. Upon learning a spell the spell will immediately appear lit and be useable. 
 
 Using a scroll of Cure III. 
-
 ![Learning Spell](/images/readme/LearningSpell.gif)
+
+Weaponskills:
+If a weaponskill is added to a JOB.lua file it will not show up on the hotbar unless that weaponskill has been learned in-game. 
+
+Abilties:
+If a ability is added to a JOB.lua file it will not appear on the hotbar until the player has reached the required level to obtain the ability.
 
 
 ## Tiered Spells Sharing Hotbar Slot:
@@ -60,8 +270,9 @@ In order to set this up simply add both spells to the JOB.lua file with the same
 In the case that a player is high enough level to use a higher tier spell, but has not learned that spell yet the lower tier spell will still appear on a hotbar with an asterisk appended to the spell title. This asterisk indicates that a spell/ability setup on this slot has not been learned yet. This asterisk will also appear if a lower tier spell is also not learnerd yet. For example the player has learned Dia II but has not learned Dia yet. The slot title/name will appear as "Dia II*" indicting there is a spell to learn in this slot. 
 
 
+# Improved Features
 
-## Summoner:
+## Summoner Changes:
 
 I ran into several issues with the Summoner hotbar that was added to this Hotbar such as the summons spells getting out of sync and other various things.
 
@@ -77,6 +288,8 @@ The weaponswitching feature mostly worked but did run into some issues. It mostl
 
 ## Macros/Scripts inside JOB.lua:
 
+# Support
+
 ## Easy Workarounds with Glitches:
 
 If you run into any glitches with the hotbar. First troubleshooting step is to reload the hotbar (/htb reload). After that reload the adddon (//lua reload xivhotbar-plus).
@@ -85,36 +298,32 @@ If you run into issues with weaponswitching: Unequip weapon and reequip it.
 
 Otherwise please report the bug with as much details as possible so I can try to replicate it!
 
-
 ## Bug Fixes
 
 - Settings the input type field in the JOB.lua to 'ws' now works properly. I had alot of issues with this working previously.
 - XIVhotbar now properly unloads and reloads when relogging or switching characters. Instead of loading a second hotbar ontop of itself
+- Fixed issue where the enviroment labels weren't hooking onto the bar during the move command
+
+## Minor Changes
+
+- Changed hover icon to the ffxiv/theme icon
+- Actions that are not useable due to debuffs(sleep,silence etc) now dim and undim for consistently.
+- Spells that are not learned yet remain dimmed until spell is learned. 
+- Fixed spells not dimming consistently when mp was insufficient
+- Added back the ability to show MP cost on actions. This is disabled by default
+- Added the ability to unlock the inventory labels and move them to any location as well customize their location and size
+- Added the ability to hide hotbar numbers and also customize their location and size
+- Added the ability to Hide Environment Labels and also customize their location and size.
+- When using weaponswitching, weaponskills that have not been learned yet will not show up on hotbar.
+- Changed the default icon that shows up when using the macro keyword.
+- Added a devmode to settings.xml which prints variuos log messages to chat and other functionility when using GM commands. 
+- Disabled the ability to click slots and swap them around during "move" command.
 
 
-								--- ADDED FEATURES --- 
--- When Logging out to switch characters xivhotbar automatically reloads so that two sets of hots bars don't
--- Changed hover icon to the ffxiv/theme icon
--- Added opaqness to spells/abilities that cant be used, like how weaponskills are.
--- Added opaqness to spells that arent learned yet
--- Fixed spells not dimming when insufficient mp
--- Added back slot MP cost is is disabled by default
--- Custom Inventory Posisition and Size
--- Hide Hotbar Numbers
--- Hide Environment Numbers and also Customize location/size
--- When using weaponswitching, weaponskills that have not been learned yet will not show up on hotbar.
--- Changed the default icon that shows up when using the macro keyword.
--- Added a devmode to settings.xml which prints varios log messages to chat when hotbar reloads
-
-								--- TO BE DONE --- 
-
-
-
-
-		
-
-								--- KNOWN ISSUES ---
-
--- When logging in the game thinks you are equiping a new weapon because it loads your gear. Functionally this shouldn't affect anything though.
+## Known Issues 
 -- If playing RNG or COR XIVHOTBAR is set to priortize weapon changes to the range slot over main slot.
 -- Weaponswitching skills show up after a delay when logging in.
+
+## Encountered Bug or Feature Request?
+
+If you encounter a bug please make a bug report here on github with as much detail as you can possibly give. Additionally, if you have a feature you like to see added you can make a bug report as well. 
