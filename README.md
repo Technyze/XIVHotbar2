@@ -20,6 +20,7 @@ Level 75 RDM (with all spells learned) zoning into Promyvion-Holla. <br>
 ![Level Capped Zone](/images/readme/LevelCappedZone.gif)
 
 **This also works the exact same way when level syncing.
+
 **Dia II (31) changes to Dia (1). This is explained below in the "Tiered Spells Sharing Hotbar Slots" section.
 
 ## Unlearned Spells and Unacquired Abilities/Weaponskills:
@@ -46,7 +47,7 @@ This works seamlessly with the level sync feature above as well. For example, sy
 
 In order to set this up simply add both spells to the JOB.lua file with the same slot specified {battle 4 11} in Descending order as seen below.
  
-![Tiered Spells](/images/readme/TieredSpells.png)
+![Tiered Spells](images/readme/TieredSpells.png)
 
 NOTE: In the case that a player is high enough level to use a higher tier spell, but has not learned that spell yet the lower tier spell will still appear on a hotbar with an asterisk appended to the spell title. This asterisk indicates that a spell/ability setup on this slot has not been learned yet. This asterisk will also appear if a lower tier spell is also not learned yet. For example the player has learned Dia II but has not learned Dia yet. The slot title/name will appear as "Dia II*" indicting there is a spell to learn in this slot. 
 
@@ -59,7 +60,7 @@ I ran into several issues with the Summoner hotbar that was added to this Hotbar
 
 Now, a summon's abilities will only show up on the hotbar when the summon is successfully summoned. Additionally, the abilities will remove themself from the hotbar when the pet is released, dies or insufficient mp. Also, pet commands: release, attack etc. do not appear on hotbar unless a summon is present.
 
-![Summoning](/images/readme/Summoning.gif)
+![Summoning](images/readme/Summoning.gif)
 
 ** All Blood Pact: Ward abilities share a cooldown and All Blood Pact: Rage abilities share a cooldown on the hotbar.
 ** Pet commands do not show up on hotbar unless player has an active pet.
