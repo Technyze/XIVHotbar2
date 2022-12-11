@@ -8,7 +8,7 @@
             <DevMode>false</DevMode>
         </Dev>
         <General>
-            <EnableWeaponSwitching>true</EnableWeaponSwitching>
+            <EnableWeaponSwitching>false</EnableWeaponSwitching>
             <HideEnvironment>false</HideEnvironment>
             <HideHotbarNumbers>false</HideHotbarNumbers>
             <HideInventoryCount>false</HideInventoryCount>
@@ -74,6 +74,9 @@
                 <Slot>ffxiv</Slot>
             </Theme>
         </Hotbar>
+        <Overlays>
+            <DisableScroll>false</DisableScroll>
+        </Overlays>
         <Texts>
             <ActionDescription>
                 <Background>

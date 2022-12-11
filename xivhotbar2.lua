@@ -101,7 +101,7 @@ function initialize()
 		skill_type = resources.items[windower.ffxi.get_items(0, inv_index).id].skill 
 		if windower.ffxi.get_player().main_job == 'RNG' then
 			inv_index = windower.ffxi.get_items().equipment.range
-			print(windower.ffxi.get_items().equipment.range)
+			
 			if windower.ffxi.get_items().equipment.range == 0 then
 				inv_index = windower.ffxi.get_items().equipment.main
 			end
@@ -717,7 +717,7 @@ end
 
 --This event is reloading hotbar if a pet dies or released
 windower.register_event('incoming chunk', function(id,original,modified,injected,blocked)
-	if state.ready == true then
+	
 		local packet = packets.parse('incoming', original)
 		if id == 0x068 and pet_dead_update == true then -- Pet Status Packet Update
 			if packet['Owner ID'] == player.id then -- If player.id and pet owner ID are the same
@@ -730,14 +730,16 @@ windower.register_event('incoming chunk', function(id,original,modified,injected
 		elseif id == 0x068 then
 			pet_dead_update = true
 		end
-	end	
+		
 end)
 
 local function successful_summon(summon_name)
 	coroutine.sleep(.1)
+	
 	local avatar_id = player:determine_summoner_id(summon_name) -- Gets the specifics summons id from the buff_table in action_manager
 	player:load_job_ability_actions(avatar_id)
 	ui:load_player_hotbar(player:get_hotbar_info())
+	
 end
 
 --This event is confirming that pet summons cast are not cancel/interupted and pet was succesfully summoned before updating the hotbar with specific pet abilities
@@ -748,12 +750,12 @@ windower.register_event('incoming chunk', function(id,original,modified,injected
 			if packet['Owner ID'] == windower.ffxi.get_player().id then -- If player.id and pet owner ID are the same
 				if packet['Pet Index'] ~= 0 then -- If the pet has an index of non zero then pet summoned succesfully
 					if ui.theme.dev_mode then log("Pet Summoned. Reloading Hotbar.") end
-					successful_summon(packet['Pet Name']) 
+					successful_summon(packet['Pet Name'])
+					no_pet = false
 				end
 			end
-			first_pet_update = false
-			no_pet = false
-			return
+			--no_pet = false
+			--return
 		elseif packet['Pet Index'] == 0 then
 			no_pet = true
 		end

@@ -332,6 +332,8 @@ Otherwise please report the bug with as much details as possible so I can try to
 - Setting the input type field in the JOB.lua to 'ws' now works properly. 
 - XIVHotbar2 now properly unloads and reloads when relogging or switching characters. Instead of loading a second hotbar on top of itself
 - Fixed issue where the environment labels weren't hooking onto the bar during the move command
+- On beastmaster when releasing a charmed pet, pet commands dont clear from the hotbar. This appears to be related to the game/private servers. This issue does not appear to be a problem with jug pets/call beast. 
+
 
 ## Minor Changes/Additions
 
