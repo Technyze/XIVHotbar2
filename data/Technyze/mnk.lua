@@ -91,11 +91,11 @@
 
 xivhotbar_keybinds_job['WAR'] = {
 	-- Hotbar #2 
+	{'battle 2 1', 'ja', 'Berserk', 'me', 'Berserk'},
+	{'battle 2 2', 'ja', 'Warcry', 'me', 'Warcry'},
 	{'battle 2 3', 'ja', 'Provoke', 't', 'Provoke'},
 	{'battle 2 4', 'ja', 'Provoke', 'st', 'Voke ST'},
-	{'battle 2 5', 'ja', 'Berserk', 'me', 'Berserk'},
-	{'battle 2 6', 'ja', 'Warcry', 'me', 'Warcry'},
-	{'battle 2 7', 'ja', 'Defender', 'me', 'Defender'},
+	{'battle 2 5', 'ja', 'Defender', 'me', 'Defender'},
 	
   }
 
