@@ -10,9 +10,9 @@ local box_config = {
 	sub_config = {}
 }
 
-local icon_height = 10
+local icon_height = 40
 local scaled_icon_height = 0
-local icon_width = 10
+local icon_width = 40
 local scaled_icon_width = 0
 local vert_cols = 2
 local debug = false
@@ -97,8 +97,8 @@ function move_boxes:init(theme_options)
 		local x, y = box_config.rows[r]:pos()
 		box_config.sub_config[r].pos_x = x
 		box_config.sub_config[r].pos_y = y
-		box_config.rows[r]:path(windower.addon_path..'/images/other/move.png')
-		box_config.rows[r]:alpha(30)
+		box_config.rows[r]:path(windower.addon_path..'/images/other/black-square.png')
+		box_config.rows[r]:alpha(100)
 
 		box_config.icons[r] = {}
 		box_config.icons[r].slot = {}
@@ -118,7 +118,7 @@ function move_boxes:enable()
 	for i=1,self.theme.rows do
 		box_config.rows[i]:show()
 		for j=1,self.theme.columns do
-			box_config.icons[i].slot[j]:show()
+			--box_config.icons[i].slot[j]:hide() -- Keeping slots hidden during move command because slot clicking is disabled.
 		end
 	end
 end
@@ -230,7 +230,7 @@ function move_boxes:move_hotbars(type, x, y, delta, blocked)
 
 	local offset = 10
 	return_value = false
-	slot_clicked = nil -- EDIT: Disabling SLOT CLICKING
+	--slot_clicked = nil -- EDIT: Disabling SLOT CLICKING
 	if type == 1 then -- Mouse left click
 		if (debug == true) then
 			print(string.format("[Mouse left click] pos_x: %d", x))
@@ -317,7 +317,7 @@ function move_boxes:move_hotbars(type, x, y, delta, blocked)
 			else
 				new_y = pos_y
 			end
-			--local pos_x, pos_y = box_config.rows[self.moved_box_info.box_index]
+			local pos_x, pos_y = box_config.rows[self.moved_box_info.box_index]
 			box_config.rows[self.moved_box_info.box_index]:pos_x(new_x)
 			box_config.rows[self.moved_box_info.box_index]:pos_y(new_y)
 			self.moved_box_info.pos_y = new_y 
