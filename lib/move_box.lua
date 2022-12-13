@@ -317,7 +317,7 @@ function move_boxes:move_hotbars(type, x, y, delta, blocked)
 			else
 				new_y = pos_y
 			end
-			local pos_x, pos_y = box_config.rows[self.moved_box_info.box_index]
+			--local pos_x, pos_y = box_config.rows[self.moved_box_info.box_index]
 			box_config.rows[self.moved_box_info.box_index]:pos_x(new_x)
 			box_config.rows[self.moved_box_info.box_index]:pos_y(new_y)
 			self.moved_box_info.pos_y = new_y 
