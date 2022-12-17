@@ -1,3 +1,19 @@
+##  Notice: HorizonXI Specifics
+
+Due to the HorizonXI private server changing the level requirements for some spells/abilities, this is going to cause conflicts with this addon.
+
+Currently as it stands right now I do believe the only issue will be with the level of spells changing. To combat this problem I have added a setting to the settings.xml 'PlayingOnHorizon'. This is false by default so as to not effect people who play elsewhere. If you play on horizon set this true!
+
+Setting 'PlayingOnHorizon' to true will tell addon to look at the horizon_spells.lua instead of spells.lua in the priv_res folder. This horizon_spells.lua file will need to be manually updated to reflect new levels of spells. I will update this as new levels are discovered and reported and push them to git as I find them. Then you can download and replace the old horizon_spells.lua. If you need to update this more urgently then you can also do this yourself. If you do this yourself be sure to change the level of the spell in the horizon_spells.lua that corresponds with the correct job_id. The top of the file has a list of all the job id's.  
+
+For example, if HorizonXI were to give Cure 1 to RDM at level 1 instead of level 3. You would determine RDM's Job ID # by looking at the top of the horizon_spells file. RDM Job ID is 5 so we would edit the value after the number 5 that is in brackets '[5]'.
+```lua
+Before
+{id=1,en="Cure",ja="ケアル",cast_time=2,element=6,icon_id=86,icon_id_nq=6,levels={[3]=1,[5]=3,[7]=5,[20]=5},mp_cost=8,prefix="/magic",range=12,recast=5,recast_id=1,requirements=1,skill=33,targets=63,type="WhiteMagic"},
+
+After
+{id=1,en="Cure",ja="ケアル",cast_time=2,element=6,icon_id=86,icon_id_nq=6,levels={[3]=1,[5]=1,[7]=5,[20]=5},mp_cost=8,prefix="/magic",range=12,recast=5,recast_id=1,requirements=1,skill=33,targets=63,type="WhiteMagic"},
+```
 ## Introduction
 
 First off, let me say that I absolutely love XIVHotbar and really appreciate the work that SirEdeonX and Akirane did. However, there were a few bugs that needed fixing and some features I wished it had, but it seems that project is no longer supported. That being said this is a heavily modified version of xivhotbar. I originally wanted to fix a few bugs and change some minor things, but one thing led to another and I ended up fixing a lot and adding several nice features. My initial intention was to do this for personal use, but now that I have added so much I want to make it public and see if anyone else likes what I have done. Thus, XIVHotbar2!
@@ -88,7 +104,7 @@ Note: If playing Ranger, XIVHotbar2 with prioritize weapon changes to the range 
 The below image is the default layout and positioning on a game running in 1080p. Most of this layout can be adjusted in the settings.xml. <br>
 ![Default Layout Image](images/readme/DefaultLayout.png)
 
-1. Put the addon in your Windower 4/addons folder. Next, inside the 'data' folder within the 'XIVHotbar2' folder create a folder with your character(s) name.
+1. Download the addon from here. Put the addon in your Windower 4/addons folder and make sure the addons folder name is jsut 'XIVHotbar2'. Next, inside the 'data' folder within the 'XIVHotbar2' folder create a folder with your character(s) name.
    
 2. Inside your 'name-of-character' folder create a general.lua and JOB.lua for each job you want to setup. Additionally, I have premade templates made for most jobs you can copy over to your character folder. The premade templates I have made are in the Data/Technyze folder. The RDM,WHM,THF,PLD are the more thorough jobs I have set up and should be the first ones to reference for any help. <br> 
 
@@ -360,7 +376,8 @@ Otherwise please report the bug with as much details as possible so I can try to
 - Weaponswitching skills show up after a delay sometimes, especially when logging in.
 - Sometimes when learning a spell the hotbar will make a brief flicker. 
 - Icons occasionally brifelyflicker after zoning
-- On beastmaster when releasing a charmed pet, pet commands dont clear from the hotbar. This appears to be related to the game/private servers. This issue does not appear to be a problem with jug pets/call beast. 
+- On beastmaster when releasing a charmed pet, pet commands dont clear from the hotbar. This appears to be related to the game/private servers. This issue does not appear to be a problem with jug pets/call beast.
+- Scroll icon overlay will sometimes display on all spells briefly after zoning/logging it. 
 
 
 ## Encountered Bug or Feature Request?

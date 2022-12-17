@@ -34,7 +34,7 @@ defaults.General.HideEnvironment = false
 defaults.General.HideInventoryCount = false
 defaults.General.EnableWeaponSwitching = false
 defaults.General.HideHotbarNumbers = false
-
+defaults.General.PlayingHorizonXI = false
 
 defaults.Hotbar = {}
 defaults.Hotbar.ShowActionDescription = true

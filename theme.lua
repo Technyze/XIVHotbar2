@@ -48,6 +48,7 @@ theme.apply = function(settings)
     options.hide_hotbar_numbers     = sg.HideHotbarNumbers
     options.hide_env                = sg.HideEnvironment
     options.hide_inventory_count    = sg.HideInventoryCount
+    options.playing_on_horizon      = sg.PlayingHorizonXI
 
 
     -- Hotbar

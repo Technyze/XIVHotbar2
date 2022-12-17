@@ -21,13 +21,14 @@
   -- Hotbar #3
   {'battle 3 1', 'ja', 'Shield Bash', 't', 'Sh. Bash'},
   {'battle 3 2', 'ja', 'Cover', 'stpc', 'Cover'},
-
+  
   {'battle 3 12', 'ja', 'Invincible', 'me', 'Invincible','2hr'},
 
   -- Hotbar #4
 	{'battle 4 1', 'ja', 'Sentinel', 'me', 'Sentinel'},
   {'battle 4 2', 'ja', 'Rampart', 'me', 'Rampart'},
   {'battle 4 3', 'ma', 'Reprisal', 'me', 'Reprisal'},
+  {'battle 4 4', 'ma', 'Enlight', 'me', 'Enlight'},
   {'battle 4 5', 'ja', 'Holy Circle', 'me', 'HolyCirc'},
 
   {'battle 4 10', 'ma', 'Raise', 'stpc', 'Raise'},
