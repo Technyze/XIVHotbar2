@@ -14,6 +14,9 @@ Before
 After
 {id=1,en="Cure",ja="ケアル",cast_time=2,element=6,icon_id=86,icon_id_nq=6,levels={[3]=1,[5]=1,[7]=5,[20]=5},mp_cost=8,prefix="/magic",range=12,recast=5,recast_id=1,requirements=1,skill=33,targets=63,type="WhiteMagic"},
 ```
+
+
+Also some HorizonXI Custom Created Weapons have issues with Weaponswitching. Such as the Onion Greataxe. 
 ## Introduction
 
 First off, let me say that I absolutely love XIVHotbar and really appreciate the work that SirEdeonX and Akirane did. However, there were a few bugs that needed fixing and some features I wished it had, but it seems that project is no longer supported. That being said this is a heavily modified version of xivhotbar. I originally wanted to fix a few bugs and change some minor things, but one thing led to another and I ended up fixing a lot and adding several nice features. My initial intention was to do this for personal use, but now that I have added so much I want to make it public and see if anyone else likes what I have done. Thus, XIVHotbar2!
