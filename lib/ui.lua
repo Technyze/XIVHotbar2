@@ -795,32 +795,33 @@ local function load(ui)
     setup_feedback(ui)
 end
 
-local function load_overlay()
-    -- if not_learned_spells_row_slot[action.action] ~= nil then -- This is for displaying the scroll overlay
-    --     key = T(not_learned_spells_row_slot[action.action]:split(' '))
-    --     --print(key)
-    --     ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/scroll.png')
-    -- end
+-- local function load_overlay()
+--     -- if not_learned_spells_row_slot[action.action] ~= nil then -- This is for displaying the scroll overlay
+--     --     key = T(not_learned_spells_row_slot[action.action]:split(' '))
+--     --     --print(key)
+--     --     ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/scroll.png')
+--     -- end
 
-    for k,v in pairs(not_learned_spells_row_slot) do
-        --print("Slot: ", k, " | ", v)
-        key = T(k:split(' '))
-        --ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/blank.png') -- Set overlay to blank by default
-        if v == true then
-            key = T(k:split(' '))
-            ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/scroll.png')
-        elseif v == false then
-            ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/blank.png') -- Set overlay to blank by default
-        end
+--     for k,v in pairs(not_learned_spells_row_slot) do
+--         --print("Slot: ", k, " | ", v)
+--         key = T(k:split(' '))
+--         --ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/blank.png') -- Set overlay to blank by default
+--         if v == true then
+--             key = T(k:split(' '))
+--             ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/scroll.png')
+--         elseif v == false then
+--             ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/blank.png') -- Set overlay to blank by default
+--         end
  
-    end
-end
+--     end
+-- end
 -- load action into a hotbar slot
 local function load_action(ui, row, slot, action, player_vitals)
 
 	local action_map = { ['ma'] = 'spells', ['ja'] = 'abilities', ['ws'] = 'weaponskills'}
     local is_disabled = false
     spells = spell_list
+    
     
     clear_slot(ui, row, slot)
     ui.hotbars[row].slot_overlay[slot]:path(windower.addon_path .. '/images/icons/custom/blank.png') -- Set overlay to blank by default
@@ -836,26 +837,39 @@ local function load_action(ui, row, slot, action, player_vitals)
         end
 	else
         
-        -- if not_learned_spells_row_slot[action.action] ~= nil then -- This is for displaying the scroll overlay
-        --     key = T(not_learned_spells_row_slot[action.action]:split(' '))
-        --     --print(key)
-        --     ui.hotbars[tonumber(key[2])].slot_overlay[tonumber(key[3])]:path(windower.addon_path .. '/images/icons/custom/scroll.png')
-        -- end
-		-- if slot has a skill (ma, ja or ws)
-
-        -- This is for determining if this each slot needs a scroll overlay.
-        if action.type == 'ma' then
-            for k,v in pairs(not_learned_spells_row_slot) do 
-                action_array1 = T(k:split(' '))
+        for k,v in pairs(not_learned_spells_row_slot) do
+            if k == action.action and v ~= false then
+                action_array1 = T(v:split(' '))
+                env_scroll = action_array1[1]
                 row_scroll = tonumber(action_array1[2])
                 slot_scroll = tonumber(action_array1[3])
-                if v == true then
+
+                if action.type == 'ma' then
                     if row == row_scroll and slot == slot_scroll then
                         ui.hotbars[row_scroll].slot_overlay[slot_scroll]:path(windower.addon_path .. '/images/icons/custom/scroll.png')
                     end
                 end
             end
         end
+        
+        -- for k,v in pairs(not_learned_spells_row_slot) do
+        --     action_array1 = T(k:split(' '))
+        --     env_scroll = action_array1[1]
+        --     row_scroll = tonumber(action_array1[2])
+        --     slot_scroll = tonumber(action_array1[3])
+    
+     
+        --     if env_scroll == 'battle' then
+        --         -- This is for determining if this each slot needs a scroll overlay.
+        --         if action.type == 'ma'then
+        --             if v == true then
+        --                 if row == row_scroll and slot == slot_scroll then
+        --                     ui.hotbars[row_scroll].slot_overlay[slot_scroll]:path(windower.addon_path .. '/images/icons/custom/scroll.png')
+        --                 end
+        --             end 
+        --         end
+        --     end
+        -- end
         -- if slot has a skill (ma, ja or ws)
 		if S{'ma','ja'}:contains(action.type) then
 			ui.hotbars[row].slot_backgrounds[slot]:alpha(200)

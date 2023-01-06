@@ -275,7 +275,9 @@ end
 
 local function parse_general_binds(hotbar)
 	for key, val in pairs(hotbar['Root']) do
-		fill_table(hotbar['Root'][key], key, general_actions)
+        if action_req_check(hotbar['Root'][key]) == true then
+		    fill_table(hotbar['Root'][key], key, general_actions)
+        end
 	end
 end
 
@@ -284,9 +286,16 @@ function action_req_check(action_array)
     row = tonumber(slot_key[2])
     col = tonumber(slot_key[3])
     
-    
+   
+    -- print("-----------------------")
+    -- for k,v in pairs(tier_list) do
+    --     print(v)
+    -- end
+    -- print("-----------------------")
+   
     
     if action_array[2] == 'ma' then
+        -- Note: create function validate_ma to do the below code in a more organized manner
         if check_spell_level(action_array[3]) == true then
             if check_if_spell_learned(action_array[3]) == true then 
                  -- LEARNED AND PREVIOUS IS SAME SLOT --
@@ -301,36 +310,43 @@ function action_req_check(action_array)
                             end
                         end
                         if tier_list_complete == true then 
-                            --not_learned_spells_row_slot[tier_list[1]] = nil
-                            not_learned_spells_row_slot[action_array[1]] = false
+                            
+                            not_learned_spells_row_slot[action_array[3]] = false
                         end
+                        previous_level_req_met = true
                         return false -- If previous spell meets requirements then return false and dont parse this spell
-                    elseif previous_learn ~= true then
-                        
+                    elseif previous_learned ~= true then
                         for k,v in pairs(tier_list) do
                             if v ~= false then
-                                --not_learned_spells_row_slot[v] = action_array[1]
-                                not_learned_spells_row_slot[action_array[1]] = true   
+                                
+                                if previous_level_req_met == true then
+                                    not_learned_spells_row_slot[action_array[3]] = action_array[1]
+                                end
                                 previous_slot = action_array[1]
                                 previous_learned = true
+                                previous_level_req_met = true
                                 return false 
                             end
                         end
                         table.insert(tier_list,action_array[3])
-                        --not_learned_spells_row_slot[action_array[3]] = action_array[1]  
-                        not_learned_spells_row_slot[action_array[1]] = true
+                    
+                        if previous_level_req_met == true then 
+                            not_learned_spells_row_slot[action_array[3]] = action_array[1]
+                        end
                         previous_slot = action_array[1]
                         previous_learned = true
+                        previous_level_req_met = true
                         return true 
                     end
                 -- LEARNED AND PREVIOUS IS NOT SAME SLOT --
                 elseif previous_slot ~= action_array[1] then -- Head of the list, could just be a list of 1.
                     tier_list = {} -- Empty this list and start new list with action name on next line.
                     table.insert(tier_list,action_array[3])
-                    --not_learned_spells_row_slot[action_array[3]] = nil
-                    not_learned_spells_row_slot[action_array[1]] = false
+                    
+                    not_learned_spells_row_slot[action_array[3]] = false
                     previous_slot = action_array[1]
                     previous_learned = true
+                    previous_level_req_met = true
                     return true
                 end    
             elseif check_if_spell_learned(action_array[3]) ~= true then
@@ -338,13 +354,14 @@ function action_req_check(action_array)
                 if previous_slot ~= action_array[1] then --If action doesn't share a hotbar slot
                     tier_list = {}
                     table.insert(tier_list,false)
-                    --not_learned_spells_row_slot[action_array[3]] = action_array[1] 
-                    not_learned_spells_row_slot[action_array[1]] = true
+                  
+                    not_learned_spells_row_slot[action_array[3]] = action_array[1]
                     for key,val in pairs(spells) do
                         if action_array[3] == spells[key]['en'] then
                             table.insert(not_learned_spells,action_array[3]) 
                             previous_slot = action_array[1]
                             previous_learned = false
+                            previous_level_req_met = true
                             return true -- Character is correct level for spell but hasn't learned it.
                         end
                     end
@@ -353,16 +370,30 @@ function action_req_check(action_array)
                     table.insert(tier_list,false)
                     for k,v in pairs(tier_list) do
                         if v ~= false then
-                            --not_learned_spells_row_slot[v] = action_array[1] 
-                            not_learned_spells_row_slot[action_array[1]] = true
+                           
+                            not_learned_spells_row_slot[action_array[3]] = action_array[1]
                             
                             break
                         end
                     end
                     previous_slot = action_array[1]
                     previous_learned = false
+                    previous_level_req_met = true
                     return false -- Character is correct level for spell but hasn't learned it.
                 end
+            end
+        elseif check_spell_level(action_array[3]) ~= true then
+            if previous_slot ~= action_array[1] then
+                tier_list = {}
+                table.insert(tier_list,false)
+                previous_slot = action_array[1]
+                previous_learned = false
+                previous_level_req_met = false
+            elseif previous_slot == action_array[1] then
+                table.insert(tier_list,false)
+                previous_slot = action_array[1]
+                previous_learned = false
+                previous_level_req_met = false
             end
         end
     elseif action_array[2] == 'ja' then
@@ -648,7 +679,6 @@ function action_manager:insert_action(player_subjob, args)
     local target = args[6] or nil
     local alias = args[7] or nil
     local icon = args[8] or nil
-    print("Args[9] ", args[9])
     if target ~= nil then target = target:lower() end
 	local environment_to_send = function()
 		if self.hotbar_settings.active_environment == 'field' then return 'f' else return 'b' end
