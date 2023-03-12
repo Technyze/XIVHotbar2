@@ -98,7 +98,7 @@ function initialize()
 	local equipment = inventory['equipment']
 	if theme_options.enable_weapon_switching == true then
 		inv_index = windower.ffxi.get_items().equipment.main
-		skill_type = resources.items[windower.ffxi.get_items(0, inv_index).id].skill 
+		--skill_type = resources.items[windower.ffxi.get_items(0, inv_index).id].skill 
 		if windower.ffxi.get_player().main_job == 'RNG' then
 			inv_index = windower.ffxi.get_items().equipment.range
 			
@@ -280,6 +280,8 @@ windower.register_event('addon command', function(command, ...)
         player:load_hotbar()
 	elseif command == 'add' then
 		player:insert_action(args)
+	elseif command == 'zoneid' then
+		print(windower.ffxi.get_info().zone)
 	elseif command == 'move' then
 		state.demo = not state.demo
 		if state.demo then
@@ -537,18 +539,26 @@ end)
 
 
 windower.register_event('incoming chunk', function(id, original, modified, injected, blocked)
+	
 	if id == 0x050 then --Equip/Unequip
 		local packet = packets.parse('incoming', original)
-		local inv_index = packet['Inventory Index']
 		local slot = packet['Equipment Slot']
-		local inv_bag = packet['Inventory Bag']
+		
+		
+		
 		if windower.ffxi.get_player().main_job == 'RNG' then
 			on_rng = true
 		else
 			on_rng = false
 		end
 		if slot == 0 or (slot == 2 and on_rng) then
-			if inv_index ~= 0 and not zoning then
+			local inv_index = packet['Inventory Index']
+			local inv_bag = packet['Inventory Bag']
+			-- print("Inv Index: ", inv_index)
+			-- print("Inv Bag: ", inv_bag)
+			-- coroutine.sleep(6)
+			-- print(resources.items[windower.ffxi.get_items(inv_bag, inv_index).id].skill)
+			if inv_index ~= 0 then
 				if windower.ffxi.get_player().main_job == 'RNG' then
 					inv_index = windower.ffxi.get_items().equipment.range
 					if windower.ffxi.get_items().equipment.range == 0 then
@@ -556,23 +566,23 @@ windower.register_event('incoming chunk', function(id, original, modified, injec
 					end
 				end
 				get_weapon_type(inv_bag,inv_index)
-				first_0x050 = false
+				
 				return
-			elseif inv_index == 0 and not zoning then
-				if first_0x050 == true then
-					if windower.ffxi.get_player().main_job == 'RNG' then
-						inv_index = windower.ffxi.get_items().equipment.range
-						if windower.ffxi.get_items().equipment.range == 0 then
-							inv_index = windower.ffxi.get_items().equipment.main
-						end
+			elseif inv_index == 0 then
+				-- print(resources.items[windower.ffxi.get_items(bag, index).id].skill)
+				if windower.ffxi.get_player().main_job == 'RNG' then
+					inv_index = windower.ffxi.get_items().equipment.range
+					if windower.ffxi.get_items().equipment.range == 0 then
+						inv_index = windower.ffxi.get_items().equipment.main
 					end
-					get_weapon_type(inv_bag,inv_index)
-					first_0x050 = false
-					return
-				elseif first_0x050 == false then
-					first_0x050 = true
-					return
 				end
+				player:update_weapon_type(nil)
+				if ui.theme.dev_mode then log("Weapon Unequiped. Reloading Hotbar.") end
+				reload_hotbar()
+				
+				return
+				
+			
 			end
 		end
 	end
@@ -580,16 +590,16 @@ windower.register_event('incoming chunk', function(id, original, modified, injec
 end)
 
 function get_weapon_type(bag,index)
+	
+	if zoning then
+		coroutine.sleep(6)
+	end
+
 	new_skill_type = resources.items[windower.ffxi.get_items(bag, index).id].skill 
 	if theme_options.enable_weapon_switching == true then
 		if new_skill_type ~= nil then 
 			player:update_weapon_type(new_skill_type)
 			if ui.theme.dev_mode then log("Weapon Changed. Reloading Hotbar.") end
-			
-			reload_hotbar()
-		elseif new_skill_type == nil then 
-			player:update_weapon_type(new_skill_type)
-			if ui.theme.dev_mode then log("Weapon Unequiped. Reloading Hotbar.") end
 			reload_hotbar()
 		end
 	end

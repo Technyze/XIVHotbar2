@@ -412,6 +412,9 @@ function action_req_check(action_array)
         return true
     elseif action_array[2] == 'macro' then
         return true
+    elseif action_array[2] == 'gs' then
+       
+        return true
     else
         return false
     end

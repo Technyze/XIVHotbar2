@@ -156,7 +156,7 @@ ui.disabled_icons = {}
 ui.default_image_paths = {
 	['default'] = windower.addon_path .. '/images/icons/custom/gear3.png',
     ['macro'] = windower.addon_path .. '/images/icons/custom/macro.png',
-	['gs'] = windower.addon_path .. '/images/icons/custom/gear2.png',
+	['gs'] = windower.addon_path .. '/images/icons/custom/gearswap.png',
 	['item'] = windower.addon_path .. '/images/icons/custom/item.png',
     
 
@@ -822,9 +822,13 @@ local function load_action(ui, row, slot, action, player_vitals)
     local is_disabled = false
     spells = spell_list
     
+    for k,v in pairs(not_learned_spells_row_slot) do
+        
+    end
     
     clear_slot(ui, row, slot)
-    ui.hotbars[row].slot_overlay[slot]:path(windower.addon_path .. '/images/icons/custom/blank.png') -- Set overlay to blank by default
+    ui.hotbars[row].slot_overlay[slot]:path(windower.addon_path .. '/images/icons/custom/blank.png') -- Set overlay to blank
+    
 
     -- if slot is empty, leave it cleared
     if action == nil then
@@ -836,8 +840,10 @@ local function load_action(ui, row, slot, action, player_vitals)
             ui.hotbars[row].slot_keys[slot]:show()
         end
 	else
+
         
         for k,v in pairs(not_learned_spells_row_slot) do
+
             if k == action.action and v ~= false then
                 action_array1 = T(v:split(' '))
                 env_scroll = action_array1[1]
@@ -847,6 +853,13 @@ local function load_action(ui, row, slot, action, player_vitals)
                 if action.type == 'ma' then
                     if row == row_scroll and slot == slot_scroll then
                         ui.hotbars[row_scroll].slot_overlay[slot_scroll]:path(windower.addon_path .. '/images/icons/custom/scroll.png')
+                    end
+                end
+            elseif k == action.action and v == false then
+                
+                if action.type == 'ma' then
+                    if row == row_scroll and slot == slot_scroll then
+                        ui.hotbars[row].slot_overlay[slot]:path(windower.addon_path .. '/images/icons/custom/blank.png')
                     end
                 end
             end
@@ -902,7 +915,6 @@ local function load_action(ui, row, slot, action, player_vitals)
 		-- if action is an item/gearswap
 		elseif S{'item','gs','macro'}:contains(action.type) then
 			setup_default_slot_icons(ui, action.type, row, slot)
-
 		-- If no custom icon is defined, just put on a cog.
 		else
 			setup_default_slot_icons(ui, 'default', row, slot)
